@@ -3,8 +3,8 @@
 Get-AzFunctionApp -SubscriptionId bd891b58-83d1-428c-9dcd-1cc2e405dec9
 
 
-Get-AzFunctionApp -SubscriptionId bd891b58-83d1-428c-9dcd-1cc2e405dec9 -Name EntraClaimStub -ResourceGroupName ADFSToolkit4Entra
-Get-AzFunctionAppSetting -SubscriptionId bd891b58-83d1-428c-9dcd-1cc2e405dec9 -Name EntraClaimStub -ResourceGroupName ADFSToolkit4Entra
+#Get-AzFunctionApp -SubscriptionId bd891b58-83d1-428c-9dcd-1cc2e405dec9 -Name EntraClaimStub -ResourceGroupName ADFSToolkit4Entra
+#Get-AzFunctionAppSetting -SubscriptionId bd891b58-83d1-428c-9dcd-1cc2e405dec9 -Name EntraClaimStub -ResourceGroupName ADFSToolkit4Entra
 Get-AzFunctionApp -SubscriptionId bd891b58-83d1-428c-9dcd-1cc2e405dec9 -Name EntraCustomClaimFunction -ResourceGroupName ADFSToolkit4Entra
 Get-AzFunctionAppSetting -SubscriptionId bd891b58-83d1-428c-9dcd-1cc2e405dec9 -Name EntraCustomClaimFunction -ResourceGroupName ADFSToolkit4Entra
 
