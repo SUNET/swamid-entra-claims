@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomClaimsFunction", "AzureCustomClaims\CustomClaimsFunction.csproj", "{FD89917C-DB15-4AA9-94D5-997F0D848046}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "domain\Domain.csproj", "{3EA31AF3-6D1A-4A4E-ABA5-8B71823853DC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{4B8909EF-3EC1-47AB-9DE4-D294E9A92075}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{966FF0D0-4CF8-4018-8AFB-D1A96E8DBF17}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{F1A5E675-D955-4A8D-98C4-A0FCF3FB230C}"
+	ProjectSection(SolutionItems) = preProject
+		Modules\deployFunctionApp.bicep = Modules\deployFunctionApp.bicep
+		Modules\deployFunctionAppParameters.bicep = Modules\deployFunctionAppParameters.bicep
+		Modules\deployFunctionAppParametersTemplate.json = Modules\deployFunctionAppParametersTemplate.json
+		deployResourceGroup.bicep = deployResourceGroup.bicep
+		Modules\deployResourceGroup.json = Modules\deployResourceGroup.json
+		Modules\parameters.json = Modules\parameters.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{ED1F1F1E-3AD1-4708-ADAE-995A1883B6CD}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\FunctionSettings.ps1 = Scripts\FunctionSettings.ps1
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD89917C-DB15-4AA9-94D5-997F0D848046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD89917C-DB15-4AA9-94D5-997F0D848046}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD89917C-DB15-4AA9-94D5-997F0D848046}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD89917C-DB15-4AA9-94D5-997F0D848046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA31AF3-6D1A-4A4E-ABA5-8B71823853DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA31AF3-6D1A-4A4E-ABA5-8B71823853DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA31AF3-6D1A-4A4E-ABA5-8B71823853DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA31AF3-6D1A-4A4E-ABA5-8B71823853DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B8909EF-3EC1-47AB-9DE4-D294E9A92075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B8909EF-3EC1-47AB-9DE4-D294E9A92075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B8909EF-3EC1-47AB-9DE4-D294E9A92075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B8909EF-3EC1-47AB-9DE4-D294E9A92075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{966FF0D0-4CF8-4018-8AFB-D1A96E8DBF17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966FF0D0-4CF8-4018-8AFB-D1A96E8DBF17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966FF0D0-4CF8-4018-8AFB-D1A96E8DBF17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966FF0D0-4CF8-4018-8AFB-D1A96E8DBF17}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A17F0E5-8DF0-468F-939E-07168CF83DC0}
+	EndGlobalSection
+EndGlobal

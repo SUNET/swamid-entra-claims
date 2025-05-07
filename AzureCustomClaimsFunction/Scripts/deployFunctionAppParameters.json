@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "targetScope": {
+			"value": "subscription"
+		},
+        "resourceGroupName": {
+            "value": "SwamidProxy"
+        },
+        "resourceGroupLocation": {
+            "value": "North Europe"
+        },
+        "parameterTags": {
+			"value": {
+                "commonTags": {
+                    "CreatedBy": ""
+                },
+                "descriptionTags": {
+                    "ResourceGroupDescription": "",
+                    "FunctionAppDescription": ""
+                }
+            }
+		},
+        "functionAppName": {
+            "value": "SwamidProxyClaims"
+        },
+        "functionAppConfig":{
+            "appSettings":[
+                {
+                    "name":"FUNCTIONS_EXTENSION_VERSION",
+                    "value":"~4"
+                },
+                {
+                    "name":"FUNCTIONS_INPROC_NET8_ENABLED",
+                    "value":"1"
+                },
+                {
+                    "name":"FUNCTIONS_WORKER_RUNTIME",
+                    "value":"dotnet"
+                },
+                {
+                    "name":"x",
+                    "value":"y"
+                },{
+                    "name":"a",
+                    "value":"b"
+                }
+
+            ]
+        }
+        
+        
+    }
+}
