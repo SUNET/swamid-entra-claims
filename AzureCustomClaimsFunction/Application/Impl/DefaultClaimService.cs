@@ -54,7 +54,7 @@ namespace FedEntraToolkit.Application.Impl
 
             //# Schac
             claims.SchacDateOfBirth = (string)GetAttributeValue(properties, mgUser, _settings.SchacDateOfBirth);
-            claims.SchacHomeOrganization= (string)GetAttributeValue(properties, mgUser, _settings.SchacHomeOrganization);
+            claims.SchacHomeOrganization= (string)GetStaticAttributeValue(_settings.SchacHomeOrganization);
             claims.SchacHomeOrganizationType= (string)GetAttributeValue(properties, mgUser, _settings.SchacHomeOrganizationType);
             //Set ScacPersonalUniqueCode
             GetSchacPersonalUniqueCode(properties, mgUser, _settings.SchacPersonalUniqueCode, ref claims);
@@ -68,7 +68,12 @@ namespace FedEntraToolkit.Application.Impl
             response.data.actions[0].claims = claims;
             return response;
         }
-
+        private string GetStaticAttributeValue(string attribute)
+        {
+            if(attribute == null)
+                return null; 
+            return attribute;
+        }
         private object GetAttributeValue(PropertyInfo[] properties,User user, string attribute) {
             if (string.IsNullOrEmpty(attribute))
                 return null;
@@ -77,6 +82,8 @@ namespace FedEntraToolkit.Application.Impl
 
         private string GetEduPersonPrincipalName(string userPrincipalName)
         {
+            if (string.IsNullOrEmpty(userPrincipalName))
+                return null;
             var regEx = new Regex("^(.+?)@", RegexOptions.IgnoreCase);
             Match m = regEx.Match(userPrincipalName);
             return string.Concat(m.Groups[1].Value,"@",_settings.Scope);
@@ -86,9 +93,10 @@ namespace FedEntraToolkit.Application.Impl
         //TODO not implemented yet
         private void GetMailLocalAddress (PropertyInfo[] properties, User user, string attribute, ref Claims claims)
         {
-            var adresses =(List<string>) GetAttributeValue(properties, user, attribute);
-           
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(attribute))
+            {
+                var adresses = (List<string>)GetAttributeValue(properties, user, attribute);
+            }
         }
 
         private void GetSchacPersonalUniqueCode(PropertyInfo[] properties, User user, Dictionary<string, string> attributes, ref Claims claims)
@@ -125,7 +133,7 @@ namespace FedEntraToolkit.Application.Impl
         { 
             var assurance =(string) GetAttributeValue(properties,user,attribute);
             if (assurance != null)
-                _logger.LogInformation("Found assurance: " + assurance);
+                //_logger.LogInformation("Found assurance: " + assurance);
             {
                 if (_settings.Assurance_LOW.Contains(assurance))
                 {
@@ -169,7 +177,7 @@ namespace FedEntraToolkit.Application.Impl
             
             foreach (var item in affiliationSettings)
             {
-                var g = groups.Value.Select(d => d.Id == item.Value).FirstOrDefault();
+                var g = (from gg in groups.Value where( gg.Id == item.Value ) select gg).FirstOrDefault();
                 if (g != null)
                 {
                     affiliations.Add(item.Key.ToLower());
@@ -188,7 +196,14 @@ namespace FedEntraToolkit.Application.Impl
                     }
                 }
 
-                if(affiliations.Contains(Constants.AFFILIATIONSTUDENT))
+                if (affiliations.Contains(Constants.AFFILIATIONEMPLOYEE)){
+                    if (!affiliations.Contains(Constants.AFFILIATIONMEMBER))
+                    {
+                        affiliations.Add(Constants.AFFILIATIONMEMBER);
+                    }
+                }
+
+                if (affiliations.Contains(Constants.AFFILIATIONSTUDENT))
                 {
                     if (!affiliations.Contains(Constants.AFFILIATIONMEMBER))
                     {

@@ -15,6 +15,7 @@ namespace FedEntraToolkit.Application.Settings
             Assurance_LOW = new List<string>();
             Assurance_MEDIUM = new List<string>();
             Assurance_HIGH = new List<string>();
+            SchacPersonalUniqueCode = new Dictionary<string, string>();
         }
 
         public string Scope { get; set; }
@@ -62,6 +63,7 @@ namespace FedEntraToolkit.Application.Settings
             if (!string.IsNullOrEmpty(EduPersonAssurance)) props.Add(EduPersonAssurance.ToLower());
             //if (!string.IsNullOrEmpty()) props.Add();
             //if (!string.IsNullOrEmpty()) props.Add();
+            
             if (SchacPersonalUniqueCode.Any())
             {
                 foreach(var entry in SchacPersonalUniqueCode)
