@@ -33,34 +33,40 @@ builder.Services.AddMvc();
 var claimSettings = new ClaimSettings()
 {
     //Prefix_ESI = Environment.GetEnvironmentVariable("Prefix_ESI"),
-    Scope = Environment.GetEnvironmentVariable("Scope"),
-    O = Environment.GetEnvironmentVariable("Claim_O"),
-    Co = Environment.GetEnvironmentVariable("Claim_Co"),
-    GivenName = Environment.GetEnvironmentVariable("Claim_GivenName"),
-    Sn = Environment.GetEnvironmentVariable("Claim_Sn"),
-    DisplayName = Environment.GetEnvironmentVariable("Claim_DisplayName"),
-    Mail = Environment.GetEnvironmentVariable("Claim_Mail"),
-    MailLocalAddress = Environment.GetEnvironmentVariable("Claim_MailLocalAddress"),
-    EduPersonOrcid = Environment.GetEnvironmentVariable("Claim_EduPersonOrcid"),
-    NorEduPersonNIN = Environment.GetEnvironmentVariable("Claim_NorEduPersonNIN"),
-    NorEduOrgAcronym = Environment.GetEnvironmentVariable("Claim_NorEduOrgAcronym"),
-    PersonalIdentityNumber = Environment.GetEnvironmentVariable("Claim_PersonalIdentityNumber"),
-    SchacDateOfBirth = Environment.GetEnvironmentVariable("Claim_ShacDateOfBirth"),
-    SchacHomeOrganization = Environment.GetEnvironmentVariable("Claim_SchacHomeOrganization"),
-    SchacHomeOrganizationType = Environment.GetEnvironmentVariable("Claim_SchacHomeOrganizationType"),
-    SchacPersonalUniqueCode = Environment.GetEnvironmentVariable("Claim_SchacPersonalUniqueCode").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Split(new[] { '=' })).ToDictionary(x => x[0], y => y[1]),
-    EduPersonAssurance = Environment.GetEnvironmentVariable("Claim_EduPersonAssurance"),
-    EppnBase = Environment.GetEnvironmentVariable("Claim_EppnBase"),
-    EduPersonAffiliation = Environment.GetEnvironmentVariable("Claim_EduPersonAffiliation").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Split(new[] { '=' })).ToDictionary(x => x[0], y => y[1]),
-    Assurance_LOW = Environment.GetEnvironmentVariable("Assurance_LOW").Split(',').ToList(),
-    Assurance_MEDIUM = Environment.GetEnvironmentVariable("Assurance_MEDIUM").Split(',').ToList(),
-    Assurance_HIGH = Environment.GetEnvironmentVariable("Assurance_HIGH").Split(',').ToList()
+    Scope = Environment.GetEnvironmentVariable("Scope") ?? string.Empty,
+    O = Environment.GetEnvironmentVariable("Claim_O") ?? string.Empty,
+    Co = Environment.GetEnvironmentVariable("Claim_Co")?? string.Empty,
+    GivenName = Environment.GetEnvironmentVariable("Claim_GivenName")?? string.Empty,
+    Sn = Environment.GetEnvironmentVariable("Claim_Sn")?? string.Empty,
+    DisplayName = Environment.GetEnvironmentVariable("Claim_DisplayName")?? string.Empty,
+    Mail = Environment.GetEnvironmentVariable("Claim_Mail")?? string.Empty,
+    MailLocalAddress = Environment.GetEnvironmentVariable("Claim_MailLocalAddress")?? string.Empty,
+    EduPersonOrcid = Environment.GetEnvironmentVariable("Claim_EduPersonOrcid")?? string.Empty,
+    NorEduPersonNIN = Environment.GetEnvironmentVariable("Claim_NorEduPersonNIN")?? string.Empty,
+    NorEduOrgAcronym = Environment.GetEnvironmentVariable("Claim_NorEduOrgAcronym")?? string.Empty,
+    PersonalIdentityNumber = Environment.GetEnvironmentVariable("Claim_PersonalIdentityNumber")?? string.Empty,
+    SchacDateOfBirth = Environment.GetEnvironmentVariable("Claim_ShacDateOfBirth")?? string.Empty,
+    SchacHomeOrganization = Environment.GetEnvironmentVariable("Claim_SchacHomeOrganization")?? string.Empty,
+    SchacHomeOrganizationType = Environment.GetEnvironmentVariable("Claim_SchacHomeOrganizationType")?? string.Empty,
+    SchacPersonalUniqueCode = (Environment.GetEnvironmentVariable("Claim_SchacPersonalUniqueCode") ?? string.Empty)
+        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+        .Select(s => s.Split(new[] { '=' }))
+        .ToDictionary(x => x[0], y => y[1]),
+    EduPersonAssurance = Environment.GetEnvironmentVariable("Claim_EduPersonAssurance")?? string.Empty,
+    EppnBase = Environment.GetEnvironmentVariable("Claim_EppnBase")?? string.Empty,
+    EduPersonAffiliation = (Environment.GetEnvironmentVariable("Claim_EduPersonAffiliation") ?? string.Empty)
+        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+        .Select(s => s.Split(new[] { '=' }))
+        .ToDictionary(x => x[0], y => y[1]),
+    Assurance_LOW = (Environment.GetEnvironmentVariable("Assurance_LOW") ?? string.Empty).Split(',').ToList(),
+    Assurance_MEDIUM = (Environment.GetEnvironmentVariable("Assurance_MEDIUM") ?? string.Empty).Split(',').ToList(),
+    Assurance_HIGH = (Environment.GetEnvironmentVariable("Assurance_HIGH") ?? string.Empty).Split(',').ToList()
 };
 
 foreach(DictionaryEntry di in Environment.GetEnvironmentVariables()){
-    if (di.Key.ToString().StartsWith("Prefix_"))
+    if (di.Key != null && di.Key.ToString().StartsWith("Prefix_"))
     {
-        claimSettings.Prefixes.Add(di.Key.ToString().Split("_").Last(), di.Value.ToString());
+        claimSettings.Prefixes.Add(di.Key.ToString().Split("_").Last(), di.Value?.ToString() ?? string.Empty);
     }
 }
 
@@ -73,7 +79,8 @@ var options = new ClientSecretCredentialOptions
     AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
 };
 
-if (Environment.GetEnvironmentVariable("UseCredentials").ToLower()=="true")
+var useCredentialsEnv = Environment.GetEnvironmentVariable("UseCredentials");
+if (!string.IsNullOrEmpty(useCredentialsEnv) && useCredentialsEnv.ToLower() == "true")
 {
     var tokenCredential = new ClientSecretCredential(
                 Environment.GetEnvironmentVariable("tenantId"),
