@@ -183,7 +183,7 @@ namespace FedEntraToolkit.Application.Impl
                     affiliations.Add(item.Key.ToLower());
                 }
 
-                // Fix missing affiliations
+                //Fix missing affiliations
                 if ((affiliations.Contains(Constants.AFFILIATIONFACULTY)) || (affiliations.Contains(Constants.AFFILIATIONSTAFF)))
                 {
                     if (!affiliations.Contains(Constants.AFFILIATIONEMPLOYEE))
@@ -210,7 +210,32 @@ namespace FedEntraToolkit.Application.Impl
                         affiliations.Add(Constants.AFFILIATIONMEMBER);
                     }
                 }
+
+                if (affiliations.Contains(Constants.AFFILIATIONALUM))
+                {
+                    if (!affiliations.Contains(Constants.AFFILIATIONALUM))
+                    {
+                        affiliations.Add(Constants.AFFILIATIONALUM);
+                    }
+                }
+
+                if (affiliations.Contains(Constants.AFFILIATIONAFFILIATE))
+                {
+                    if (!affiliations.Contains(Constants.AFFILIATIONAFFILIATE))
+                    {
+                        affiliations.Add(Constants.AFFILIATIONAFFILIATE);
+                    }
+                }
+
+                if (affiliations.Contains(Constants.AFFILIATIONLIBRARYWALKIN))
+                {
+                    if (!affiliations.Contains(Constants.AFFILIATIONLIBRARYWALKIN))
+                    {
+                        affiliations.Add(Constants.AFFILIATIONLIBRARYWALKIN);
+                    }
+                }
             }
+
             if (affiliations.Any())
             {
                 foreach (var affiliation in affiliations)
