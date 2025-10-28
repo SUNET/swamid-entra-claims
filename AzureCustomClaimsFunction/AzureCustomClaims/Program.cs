@@ -64,9 +64,11 @@ var claimSettings = new ClaimSettings()
 };
 
 foreach(DictionaryEntry di in Environment.GetEnvironmentVariables()){
-    if (di.Key != null && di.Key.ToString().StartsWith("Prefix_"))
-    {
-        claimSettings.Prefixes.Add(di.Key.ToString().Split("_").Last(), di.Value?.ToString() ?? string.Empty);
+    if(di.Key != null) { 
+        if (di.Key.ToString().StartsWith("Prefix_"))
+        {
+            claimSettings.Prefixes.Add(di.Key.ToString().Split("_").Last(), di.Value?.ToString() ?? string.Empty);
+        }
     }
 }
 

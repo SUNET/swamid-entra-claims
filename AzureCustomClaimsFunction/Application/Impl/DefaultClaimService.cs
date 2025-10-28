@@ -238,6 +238,7 @@ namespace FedEntraToolkit.Application.Impl
 
             if (affiliations.Any())
             {
+                affiliations = affiliations.Distinct().ToList();
                 foreach (var affiliation in affiliations)
                 {
                     claims.EduPersonAffiliation.Add(affiliation);
