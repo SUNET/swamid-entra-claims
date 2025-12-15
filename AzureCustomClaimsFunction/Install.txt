@@ -1,0 +1,27 @@
+https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-first-function-bicep?tabs=azure-cli%2Ccore-tools&pivots=programming-language-csharp
+Connect-AzAccount
+
+CLI
+az deployment sub create \
+  --name demoSubDeployment \
+  --location centralus \
+  --template-file deployEntraResourceGroup.bicep \
+  --parameters resourceGroupName=ADFSToolkit4EntraTest resourceGroupLocation=westeurope
+
+Powershell
+New-AzSubscriptionDeployment `
+  -Name demoSubDeployment `
+  -Location centralus `
+  -TemplateFile deployEntraResourceGroup.bicep `
+  -resourceGroupName ADFSToolkit4EntraTest `
+  -resourceGroupLocation westeurope
+
+ResourceGroupName : ADFSToolkit4Entra
+Location          : westeurope
+ProvisioningState : Succeeded
+Tags              :
+ResourceId        : /subscriptions/bd891b58-83d1-428c-9dcd-1cc2e405dec9/resourceGroups/ADFSToolkit4Entra
+
+New-AzResourceGroup `
+  -TemplateFile main.bicep `
+  -TemplateParameterFile main.parameters.json `

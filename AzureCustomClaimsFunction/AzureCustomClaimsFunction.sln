@@ -13,12 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{F1A5E675-D955-4A8D-98C4-A0FCF3FB230C}"
 	ProjectSection(SolutionItems) = preProject
-		Modules\deployFunctionApp.bicep = Modules\deployFunctionApp.bicep
-		Modules\deployFunctionAppParameters.bicep = Modules\deployFunctionAppParameters.bicep
-		Modules\deployFunctionAppParametersTemplate.json = Modules\deployFunctionAppParametersTemplate.json
-		deployResourceGroup.bicep = deployResourceGroup.bicep
-		Modules\deployResourceGroup.json = Modules\deployResourceGroup.json
-		Modules\parameters.json = Modules\parameters.json
+		Install.txt = Install.txt
+		main.parameters.json = main.parameters.json
+		main.bicep = main.bicep
+		slask.bicep = slask.bicep
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{ED1F1F1E-3AD1-4708-ADAE-995A1883B6CD}"

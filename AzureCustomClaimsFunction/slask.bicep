@@ -1,0 +1,250 @@
+/* This Bicep file creates a function app running in a Flex Consumption plan 
+that connects to Azure Storage by using managed identities with Microsoft Entra ID. */
+
+//********************************************
+// Parameters
+//********************************************
+@description('Name of the function')
+param sites_EntraCustomClaimFunction_name string = 'EntraCustomClaimFunctionBicep'
+
+@description('Primary region for all Azure resources.')
+@minLength(1)
+param location string = resourceGroup().location 
+
+@description('Language runtime used by the function app.')
+@allowed(['dotnet-isolated','python','java', 'node', 'powerShell'])
+param functionAppRuntime string = 'dotnet-isolated' //Defaults to .NET isolated worker
+
+@description('Target language version used by the function app.')
+@allowed(['3.10','3.11', '7.4', '8.0', '9.0', '10', '11', '17', '20'])
+param functionAppRuntimeVersion string = '8.0' //Defaults to .NET 8.
+
+@description('The maximum scale-out instance count limit for the app.')
+@minValue(40)
+@maxValue(1000)
+param maximumInstanceCount int = 100
+
+@description('The memory size of instances used by the app.')
+@allowed([2048,4096])
+param instanceMemoryMB int = 2048
+
+@description('A unique token used for resource name generation.')
+@minLength(3)
+param resourceToken string = toLower(uniqueString(subscription().id, location))
+
+@description('A globally unique name for your deployed function app.')
+param appName string = 'func-${resourceToken}'
+
+//********************************************
+// Variables
+//********************************************
+
+// Generates a unique container name for deployments.
+var deploymentStorageContainerName = 'app-package-${take(appName, 32)}-${take(resourceToken, 7)}'
+
+// Key access to the storage account is disabled by default 
+var storageAccountAllowSharedKeyAccess = false
+
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
+  name: 'log-${resourceToken}'
+  location: location
+  properties: any({
+    retentionInDays: 30
+    features: {
+      searchVersion: 1
+    }
+    sku: {
+      name: 'PerGB2018'
+    }
+  })
+}
+
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: 'appi-${resourceToken}'
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: logAnalytics.id
+    DisableLocalAuth: true
+  }
+}
+
+resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+  name: 'st${resourceToken}'
+  location: location
+  kind: 'StorageV2'
+  sku: { name: 'Standard_LRS' }
+  properties: {
+    accessTier: 'Hot'
+    allowBlobPublicAccess: false
+    allowSharedKeyAccess: storageAccountAllowSharedKeyAccess
+    dnsEndpointType: 'Standard'
+    minimumTlsVersion: 'TLS1_2'
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Allow'
+    }
+    publicNetworkAccess: 'Enabled'
+  }
+  resource blobServices 'blobServices' = {
+    name: 'default'
+    properties: {
+      deleteRetentionPolicy: {}
+    }
+    resource deploymentContainer 'containers' = {
+      name: deploymentStorageContainerName
+      properties: {
+        publicAccess: 'None'
+      }
+    }
+  }
+}
+// resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+//   name: 'st${resourceToken}'
+//   location: location
+//   kind: 'StorageV2'
+//   sku: { name: 'Standard_LRS' }
+//   properties: {
+//     accessTier: 'Hot'
+//     allowBlobPublicAccess: false
+//     allowSharedKeyAccess: storageAccountAllowSharedKeyAccess
+//     dnsEndpointType: 'Standard'
+//     minimumTlsVersion: 'TLS1_2'
+//     networkAcls: {
+//       bypass: 'AzureServices'
+//       defaultAction: 'Allow'
+//     }
+//     publicNetworkAccess: 'Enabled'
+//   }
+  // resource blobServices 'blobServices' = {
+  //   name: 'default'
+  //   properties: {
+  //     deleteRetentionPolicy: {}
+  //   }
+//     resource deploymentContainer 'containers' = {
+//       name: deploymentStorageContainerName
+//       properties: {
+//         publicAccess: 'None'
+//       }
+//     }
+//   }
+// }
+
+resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  name: 'uai-data-owner-${resourceToken}'
+  location: location
+}
+
+// resource roleAssignmentBlobDataOwner 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid(subscription().id, storage.id, userAssignedIdentity.id, 'Storage Blob Data Owner')
+//   scope: storage
+//   properties: {
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', storageBlobDataOwnerRoleId)
+//     principalId: userAssignedIdentity.properties.principalId
+//     principalType: 'ServicePrincipal'
+//   }
+// }
+
+// resource roleAssignmentBlob 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid(subscription().id, storage.id, userAssignedIdentity.id, 'Storage Blob Data Contributor')
+//   scope: storage
+//   properties: {
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', storageBlobDataContributorRoleId)
+//     principalId: userAssignedIdentity.properties.principalId
+//     principalType: 'ServicePrincipal'
+//   }
+// }
+
+// resource roleAssignmentQueueStorage 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid(subscription().id, storage.id, userAssignedIdentity.id, 'Storage Queue Data Contributor')
+//   scope: storage
+//   properties: {
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', storageQueueDataContributorId)
+//     principalId: userAssignedIdentity.properties.principalId
+//     principalType: 'ServicePrincipal'
+//   }
+// }
+
+// resource roleAssignmentTableStorage 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid(subscription().id, storage.id, userAssignedIdentity.id, 'Storage Table Data Contributor')
+//   scope: storage
+//   properties: {
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', storageTableDataContributorId)
+//     principalId: userAssignedIdentity.properties.principalId
+//     principalType: 'ServicePrincipal'
+//   }
+// }
+
+// resource roleAssignmentAppInsights 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid(subscription().id, applicationInsights.id, userAssignedIdentity.id, 'Monitoring Metrics Publisher')
+//   scope: applicationInsights
+//   properties: {
+//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', monitoringMetricsPublisherId)
+//     principalId: userAssignedIdentity.properties.principalId
+//     principalType: 'ServicePrincipal'
+//   }
+// }
+
+//********************************************
+// Function app and Flex Consumption plan definitions
+//********************************************
+
+resource appServicePlan 'Microsoft.Web/serverfarms@2024-04-01' = {
+  name: 'plan-${resourceToken}'
+  location: location
+  kind: 'functionapp'
+  sku: {
+    tier: 'FlexConsumption'
+    name: 'FC1'
+  }
+  properties: {
+    reserved: true
+  }
+}
+
+resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
+  name: sites_EntraCustomClaimFunction_name //appName
+  location: location
+  kind: 'functionapp,linux'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userAssignedIdentity.id}':{}
+      }
+    }
+  properties: {
+    serverFarmId: appServicePlan.id
+    httpsOnly: true
+    siteConfig: {
+      minTlsVersion: '1.2'
+    }
+    functionAppConfig: {
+      deployment: {
+        storage: {
+          type: 'blobContainer'
+          value: '${storage.properties.primaryEndpoints.blob}${deploymentStorageContainerName}'
+          authentication: {
+            type: 'UserAssignedIdentity'
+            userAssignedIdentityResourceId: userAssignedIdentity.id
+          }
+        }
+      }
+      scaleAndConcurrency: {
+        maximumInstanceCount: maximumInstanceCount
+        instanceMemoryMB: instanceMemoryMB
+      }
+      runtime: { 
+        name: functionAppRuntime
+        version: functionAppRuntimeVersion
+      }
+    }
+  }
+  resource configAppSettings 'config' = {
+    name: 'appsettings'
+    properties: {
+        APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
+        APPLICATIONINSIGHTS_AUTHENTICATION_STRING: 'ClientId=${userAssignedIdentity.properties.clientId};Authorization=AAD'
+      }
+  }
+}
