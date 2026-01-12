@@ -1,6 +1,6 @@
-﻿using FedEntraToolkit.Application.Impl;
-using FedEntraToolkit.Application.Interface;
-using FedEntraToolkit.Application.Settings;
+﻿using FedEntraToolkit.Impl;
+using FedEntraToolkit.Interface;
+using FedEntraToolkit.Settings;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;

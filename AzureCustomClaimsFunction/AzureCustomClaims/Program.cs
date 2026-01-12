@@ -1,7 +1,7 @@
 using Azure.Identity;
-using FedEntraToolkit.Application.Impl;
-using FedEntraToolkit.Application.Interface;
-using FedEntraToolkit.Application.Settings;
+using FedEntraToolkit.Impl;
+using FedEntraToolkit.Interface;
+using FedEntraToolkit.Settings;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;

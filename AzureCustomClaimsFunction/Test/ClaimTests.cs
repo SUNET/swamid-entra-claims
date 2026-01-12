@@ -1,4 +1,4 @@
-using FedEntraToolkit.Application;
+using FedEntraToolkit;
 using FedEntraToolkit.Test;
 using Microsoft.Graph.Models;
 using Microsoft.Identity.Client;
