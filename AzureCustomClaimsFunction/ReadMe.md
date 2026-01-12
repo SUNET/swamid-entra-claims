@@ -2,14 +2,53 @@
 
 Install application as an Azure function
 
-Create an app registration with listed permissions
+Checkout code (from )
+Run vscode, open folder AzureCustomClaimsFunction/AzureCustomClaims
+
+If there's an existing function app to deploy to:
+1. In the cmd text field, type Azure Functions: Deploy to function app
+2. Choose Subscription
+3. Choose Function App
+
+No existing function app to deploy to. step 1-2 above
+4. Choose '> Create new function app'
+5. Type the name for the new function
+6. Choose location
+7. Choose Runtime stack -> .Net 8 Isolated
+8. Select resource authentication type -> Managed Identity
+
+Create function app in Azure Portal
+1. Choose create functionapp, choose type of hosting (flex is pre selected)
+2. Settings
+	- Select or create resourcegroup
+	- Type the name of the function (EntraCustomTest3)
+	- Choose Region (North Europe)
+	- Clr-stack -> .NET
+	- Version -> 8 LTS
+	- Instance size , 2048 MB
+	- Redundance, optional
+3. Storage, reuse or create new
+4. Azure OpenAI, skip and next
+5. Network
+	- Activate public access, on
+	- Activate virtual network, off (on if you're using a vn)
+6. Monitoring, Application insights. New or existing, select region
+7. Distribution, ignore
+8. leave default
+9. Tags, default
+10. Review and create
+
+Create an app registration with listed permissions (EntraCustomClaimsClient)
 - Directory.ReadAll
 - Group.ReadAll
 - GroupMember.ReadAll
 - User.Read
 - User.ReadAll
   
- Configure a 'Custom authentication extension' under Enterprise applications. Set up with the appregistration and the attributes in the supported attributes list below
+ Configure a 'Custom authentication extension' under Enterprise applications. 
+ configure with the api-url from the function app (get function web address)
+ 
+ Set up with the appregistration and the attributes in the supported attributes list below
 
 Supported attributes:
 - O
@@ -74,18 +113,6 @@ Every attribute in the settings, thats not 'null' gets loaded and is available f
 ´´´
 ```
 
-Grupper som programmet tilldelats
-
-Visningsnamn för endast moln-grupper
-
-filtergrupper 
-    visningsnamn
-    innehåller
-    affiliation.
-Anpassa namn
-    urn:oid:1.3.6.1.4.1.5923.1.1.1.9
-    ^(?'name'\w+).(?'value'\w+)
-    {value}@aticdmoutlook.onmicrosoft.com
   
 
 

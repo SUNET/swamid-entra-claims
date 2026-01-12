@@ -8,8 +8,8 @@ using System.Net;
 using System.Net.Mime;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Extensions.Configuration;
-using FedEntraToolkit.Domain.Model;
-using FedEntraToolkit.Application.Interface;
+using FedEntraToolkit.Model;
+using FedEntraToolkit.Interface;
 
 namespace FedEntraToolkit
 {

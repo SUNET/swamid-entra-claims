@@ -1,4 +1,4 @@
-﻿using FedEntraToolkit.Domain.Model;
+﻿using FedEntraToolkit.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
