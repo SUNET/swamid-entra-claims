@@ -29,3 +29,5 @@ New-AzResourceGroup `
   checka ut koden
   Kör vscode, öppna folder AzureCustomClaimsFunction
   I fältet längst upp, skriv > AzureFunction
+
+  https://learn.microsoft.com/en-us/entra/identity-platform/configure-token-lifetimes

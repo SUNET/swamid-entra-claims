@@ -83,7 +83,10 @@ namespace FedEntraToolkit.Test
             claimSettings.EduPersonAssurance = _configuration.GetValue<string>("Values:Claim_EduPersonAssurance");
             claimSettings.EppnBase= _configuration.GetValue<string>("Values:Claim_EppnBase");
             claimSettings.EduPersonAffiliation = _configuration.GetValue<string>("Values:Claim_EduPersonAffiliation").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Split(new[] { '=' })).ToDictionary(x => x[0], y => y[1]);
-            
+
+            claimSettings.Assurance_LOW = (_configuration.GetValue<string>("Values:Assurance_LOW") ?? string.Empty).Split(',').ToList();
+            claimSettings.Assurance_MEDIUM = (_configuration.GetValue<string>("Values:Assurance_MEDIUM") ?? string.Empty).Split(',').ToList();
+            claimSettings.Assurance_HIGH = (_configuration.GetValue<string>("Values:Assurance_HIGH") ?? string.Empty).Split(',').ToList();
             //claimSettings.O = _configuration.GetValue<string>("Values:ClientId");
             //claimSettings.O = _configuration.GetValue<string>("Values:ClientId");
             return claimSettings;
