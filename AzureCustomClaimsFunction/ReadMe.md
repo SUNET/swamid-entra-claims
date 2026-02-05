@@ -147,6 +147,21 @@ Just add the rest. Every attribute in the settings, thats not 'null' gets 'loade
 }
 ´´´
 ```
+## Customization of Session Lifetimes
+The best way to achieve shorter lifetimes is by using policies  
+### Create new Conditional Access Policy
+ - Go to Entra ID > Contitional Access > Policies
+ - Select new policy and give it a name "EntraCustomClaimsSessionPolicy"
+ - Choose which users and/or groups that should be affected and exclude what you want,   
+  for example "break glass accounts"
+ - Selected Resources > Specific resources > Search and select your enterprise application for Saml....
+ - Network > skip
+ - Conditions > skip
+ - Grant > skip
+ - Session > Sign-in frequency. Choose how many hours you want
+ - Enable policy > On
+
+
 
 ## Summary
 After completing these steps you will have:  
