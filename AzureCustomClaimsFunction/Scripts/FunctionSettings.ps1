@@ -11,11 +11,11 @@ Get-AzFunctionAppSetting -SubscriptionId bd891b58-83d1-428c-9dcd-1cc2e405dec9 -N
 #//fyll på efter 'x' = 'y' med parametrar
 $config =@{
     'APPLICATIONINSIGHTS_CONNECTION_STRING' = 'InstrumentationKey=7c0349cb-20cd-4939-89c9-c9de53ffe66f;IngestionEndpoint=https://northeurope-2.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/;ApplicationId=4df33b23-7c85-4d6b-a698-ca9e69793e02'
-    'AzureWebJobsStorage' = 'DefaultEndpointsProtocol=https;AccountName=adfstoolkit4entra9294;AccountKey=U9X/ZRVwMvJWeDaxkL1ylYKIWSdEd6co8lW6csiuuOctKozTRg6r2rKJjCP+nVF3BKSziaFRDjFq+AStKLonUQ==;EndpointSuffix=core.windows.net';
+    'AzureWebJobsStorage' = 'DefaultEndpointsProtocol=https;AccountName=;AccountKey=;EndpointSuffix=core.windows.net';
     'FUNCTIONS_EXTENSION_VERSION' = '~4';
     'FUNCTIONS_INPROC_NET8_ENABLED' = '1';
     'FUNCTIONS_WORKER_RUNTIME' = 'dotnet';
-    'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING' = 'DefaultEndpointsProtocol=https;AccountName=adfstoolkit4entra9294;AccountKey=U9X/ZRVwMvJWeDaxkL1ylYKIWSdEd6co8lW6csiuuOctKozTRg6r2rKJjCP+nVF3BKSziaFRDjFq+AStKLonUQ==;EndpointSuffix=core.windows.net';
+    'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING' = 'DefaultEndpointsProtocol=https;AccountName=;AccountKey=;EndpointSuffix=core.windows.net';
     'WEBSITE_CONTENTSHARE' = 'entraclaimstubac14';
     'x' = 'y';
 }
